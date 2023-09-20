@@ -1,19 +1,18 @@
 # GelInsight
-GelInsight: open-source software for large-sample DNA fragmentation quality control in gel electrophoresis images
+GelInsight is an open-source software for large-sample DNA fragmentation quality control in gel electrophoresis images. 
+
+Software features:
 
 
-UNC Software GelInsight
+---
+## Download and installtion 
+### As a standalone Windows program
 
-Copyright (C) 2023 The University of North Carolina at Chapel Hill
+### As a MATLAB script
 
-All rights reserved.
+---
+## Usage
 
-(See the copyright and permissions notice.)
-
-
-### Download and install as a standalone program
-
-### Running the program on MATLAB
-
-## Step-by-step instructions
+---
+## Copyright and Permission Notice
 
