@@ -1,5 +1,5 @@
 COPYRIGHT AND PERMISSION NOTICE
-UNC Software Gel Insight
+UNC Software GelInsight
 Copyright (C) 2023 The University of North Carolina at Chapel Hill
 All rights reserved.
 
