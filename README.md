@@ -39,6 +39,7 @@ The following programs (and recommended versions) are requiredd:
 <p align="center">
   <img src="./img/demo_2.PNG" alt="Software Demo - Results" width="738">
 </p> 
+
   11. The software will automatically switch to the [Results] tab following successful analysis.
   12. Iterate through each sample to view the base-pair distribution.
   13. Tables and plots provide an overview of the results.
