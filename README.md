@@ -15,7 +15,7 @@ The software extracts the following information from input gel-electrophoresis i
 ### As a MATLAB script
 The script `GelInsight.m` can be ran directly within the MATLAB environment. 
 
-The following programs (and recommended versions) are requiredd:
+The following programs (and recommended versions) are required:
   - MATLAB (R2021a, version 9.10)
   - Signal Processing Toolbox (version 8.6)
   - Image Processing Toolbox (version 11.3)
@@ -23,7 +23,7 @@ The following programs (and recommended versions) are requiredd:
 ## How it works (step-by-step instructions)
 
 <p align="center">
-  <img src="./img/demo_1.PNG" alt="Software Demo - Image Processing" width="738">
+  <img src="./img/demo_1.PNG" alt="Software Demo - Image Processing" width="800">
 </p> 
 
   1. Load image to process. Supported file types: .jpg, .jpeg, .tif, .tiff, .png, .bmp
@@ -37,7 +37,7 @@ The following programs (and recommended versions) are requiredd:
   9. Adjust the smoothing factor, where 0 applies no smoothing to the image while 1 applies maximum smoothing to the image. This will vary according to the noise present in the samples.
   10. Click [Analyze] to proceed into the Analysis.
 <p align="center">
-  <img src="./img/demo_2.PNG" alt="Software Demo - Results" width="738">
+  <img src="./img/demo_2.PNG" alt="Software Demo - Results" width="800">
 </p> 
 
   11. The software will automatically switch to the [Results] tab following successful analysis.
