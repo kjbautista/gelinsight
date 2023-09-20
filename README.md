@@ -1,23 +1,50 @@
 # GelInsight
-GelInsight is an open-source software for large-sample DNA fragmentation quality control in gel electrophoresis images. 
+GelInsight is a MATLAB-based open-source software. It exctracts base-pair  It was designed for large-sample DNA fragmentation quality control in gel electrophoresis images. 
 
-Software features:
-
+The software extracts the following information from input gel-electrophoresis images:
+  - base-pair size distribution
+  - peak base-pair size and relative base-pair area percentage
+  - percentage of fragments within a target base-pair range
 
 ---
-## Download and installtion 
+## How to run the software 
 ### As a standalone Windows program
+  1. MATLAB Runtime (version 9.10) is required for the software to run. Click [here](https://www.mathworks.com/products/compiler/matlab-runtime.html) for download and installation instructions. 
+  2. Navigate to the main page of the repository. On the right, click **Releases**. Download and install the latest release.
 
 ### As a MATLAB script
+The script `GelInsight.m` can be ran directly within the MATLAB environment. 
 
+The following programs (and recommended versions) are requiredd:
+  - MATLAB (R2021a, version 9.10)
+  - Signal Processing Toolbox (version 8.6)
+  - Image Processing Toolbox (version 11.3)
 ---
-## Usage
+## How it works (step-by-step instructions)
+
+
+  1. Load image to process. Supported file types: *.jpg,*.jpeg,*.tif,*.tiff,*.png,*.bmp
+  2. Select a region of interest to analyze. Click and drag to draw a rectangle. Adjust the rectangle accordingly to fully encompass the desired region.
+  3. Confirm region of interest.
+  4. Input parameters: number of lanes (including the ladder) and the position of the ladder relative to the other lanes.
+  5. Click [Detect Lanes] for automated lane detection. Adjust lane detections, if needed.
+  6. Input comma-delimited ladder values from highest to lowest (relative to the image).
+  7. Click [Detect Ladder] for automated ladder detection. Adjust ladder detections, if needed.
+  8. For DNA fragmentation quality control, input the target base-pair range.
+  9. Adjust the smoothing factor, where 0 applies no smoothing to the image while 1 applies maximum smoothing to the image. This will vary according to the noise present in the samples.
+  10. Click [Analyze] to proceed into the Analysis.
+  11. The software will automatically switch to the [Results] tab following successful analysis.
+  12. Iterate through each sample to view the base-pair distribution.
+  13. Tables and plots provide an overview of the results.
+  14. Select the desired data for export, and click [Export]. A dialog box will open. Navigate to the desired folder and input the desired file name for saving. 
 
 ---
 ## Copyright and Permission Notice
 
 UNC Software GelInsight
-Copyright (C) 2023 The University of North Carolina at Chapel Hill
+
+Copyright © 2023 The University of North Carolina at Chapel Hill
+
 All rights reserved.
 
 The University of North Carolina at Chapel Hill (“UNC”) and the developers of GelInsight software (“Software”) give recipient (“Recipient”) permission to download a single copy of the Software in executable form and use by university, non-profit, or research institution users only, provided that the following conditions are met:
