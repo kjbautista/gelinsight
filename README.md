@@ -1,7 +1,7 @@
 # GelInsight
 GelInsight is a MATLAB-based open-source software. It was designed for large-sample DNA fragmentation quality control using gel electrophoresis images. 
 
-The software extracts the following information from input gel-electrophoresis images of DNA samples:
+The software extracts the following information from input gel electrophoresis images of DNA samples:
   - base-pair size distribution
   - peak base-pair size and relative base-pair area percentage
   - percentage of fragments within a target base-pair range
