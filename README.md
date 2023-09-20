@@ -28,7 +28,7 @@ The following programs (and recommended versions) are required:
   <img src="./img/demo_1.PNG" alt="Software Demo - Image Processing" width="800">
 </p> 
 
-  1. Click `Load Image`. Load image to process. (Supported file types: .jpg, .jpeg, .tif, .tiff, .png, .bmp)
+  1. Click `Load Image`. Select image to process. (Supported file types: .jpg, .jpeg, .tif, .tiff, .png, .bmp)
   2. Click `Select New Region`. Click and drag to draw a rectangle around a region of interest to analyze. Adjust the rectangle accordingly to fully encompass the desired region.
   3. Click `Confirm Region` to confirm region of interest.
   4. Input the number of lanes (including the ladder) and the position of the ladder relative to the other lanes.
