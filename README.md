@@ -22,6 +22,9 @@ The following programs (and recommended versions) are requiredd:
 ---
 ## How it works (step-by-step instructions)
 
+<p align="center">
+  <img src="./img/demo_1.png" alt="Software Demo - Image Processing" width="738">
+</p> 
 
   1. Load image to process. Supported file types: *.jpg,*.jpeg,*.tif,*.tiff,*.png,*.bmp
   2. Select a region of interest to analyze. Click and drag to draw a rectangle. Adjust the rectangle accordingly to fully encompass the desired region.
@@ -33,6 +36,9 @@ The following programs (and recommended versions) are requiredd:
   8. For DNA fragmentation quality control, input the target base-pair range.
   9. Adjust the smoothing factor, where 0 applies no smoothing to the image while 1 applies maximum smoothing to the image. This will vary according to the noise present in the samples.
   10. Click [Analyze] to proceed into the Analysis.
+<p align="center">
+  <img src="./img/demo_2.png" alt="Software Demo - Results" width="738">
+</p> 
   11. The software will automatically switch to the [Results] tab following successful analysis.
   12. Iterate through each sample to view the base-pair distribution.
   13. Tables and plots provide an overview of the results.
