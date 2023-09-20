@@ -9,8 +9,10 @@ The software extracts the following information from input gel-electrophoresis i
 ---
 ## How to run the software 
 ### As a standalone Windows program
-  1. MATLAB Runtime (version 9.10) is required for the software to run. Click [here](https://www.mathworks.com/products/compiler/matlab-runtime.html) for download and installation instructions. 
-  2. Navigate to the main page of the repository. On the right, click **Releases**. Download and install the latest release.
+  1. Navigate to the main page of the repository.
+  2. On the right, click **Releases**. Download and install the latest release. To install, run `GelInsightInstaller_web.exe`.
+  3. MATLAB Runtime (version 9.10) is required for the software to run. The installer should automatically install MATLAB Runtime. You can also click [here](https://www.mathworks.com/products/compiler/matlab-runtime.html) for download and installation instructions. 
+
 
 ### As a MATLAB script
 The script `GelInsight.m` can be ran directly within the MATLAB environment. 
