@@ -22,7 +22,7 @@ The following programs (and recommended versions) are required:
   - Signal Processing Toolbox (version 8.6)
   - Image Processing Toolbox (version 11.3)
 ---
-## How it works (step-by-step instructions)
+## Usage (step-by-step instructions)
 
 <p align="center">
   <img src="./img/demo_1.PNG" alt="Software Demo - Image Processing" width="800">
