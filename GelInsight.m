@@ -14,6 +14,8 @@ classdef GelInsight < matlab.apps.AppBase
         MoveLineInstructions            matlab.ui.control.Label
         ParametersPanel                 matlab.ui.container.Panel
         GridLayout3                     matlab.ui.container.GridLayout
+        SmoothingAlgorithmSelection     matlab.ui.control.DropDown
+        SmoothingalgorithmDropDownLabel  matlab.ui.control.Label
         ResetLaneLadderDetectionButton  matlab.ui.control.Button
         LaddervalueshighesttolowestseparatedbyacommaEditFieldLabel  matlab.ui.control.Label
         LadderValuesInput               matlab.ui.control.EditField
@@ -32,16 +34,16 @@ classdef GelInsight < matlab.apps.AppBase
         NumLanesInput                   matlab.ui.control.Spinner
         NumberoflanesincludingladderLabel  matlab.ui.control.Label
         AnalyzeButton                   matlab.ui.control.Button
-        ROI                             matlab.ui.control.UIAxes
         Image                           matlab.ui.control.UIAxes
+        ROI                             matlab.ui.control.UIAxes
         ResultsTab                      matlab.ui.container.Tab
         GridLayout2                     matlab.ui.container.GridLayout
         LanePanel                       matlab.ui.container.Panel
         GridLayout10                    matlab.ui.container.GridLayout
         RightButton                     matlab.ui.control.Button
         LeftButton                      matlab.ui.control.Button
-        LaneImage                       matlab.ui.control.UIAxes
         BpDistribution                  matlab.ui.control.UIAxes
+        LaneImage                       matlab.ui.control.UIAxes
         Panel_4                         matlab.ui.container.Panel
         GridLayout9                     matlab.ui.container.GridLayout
         BandPercPlot                    matlab.ui.control.UIAxes
@@ -468,6 +470,8 @@ classdef GelInsight < matlab.apps.AppBase
             if mean(app.RawIm(:)) < 0.5
                 app.RawIm = imcomplement(app.RawIm); 
             end 
+            app.RawIm = medfilt2(app.RawIm);
+            app.RawIm = mat2gray(app.RawIm);
 
             % display Image
             imagesc(app.Image,app.RawIm)
@@ -486,6 +490,7 @@ classdef GelInsight < matlab.apps.AppBase
             app.BandPercLowLimInput.Enable = 'off';
             app.BandPercHighLimInput.Enable = 'off';
             app.SmoothingFactorInput.Enable = 'off';
+            app.SmoothingAlgorithmSelection.Enable = 'off';
             app.AnalyzeButton.Enable = 'off';
             app.ExportButton.Enable = 'off';
         end
@@ -505,6 +510,7 @@ classdef GelInsight < matlab.apps.AppBase
             app.BandPercLowLimInput.Enable = 'off';
             app.BandPercHighLimInput.Enable = 'off';
             app.SmoothingFactorInput.Enable = 'off';
+            app.SmoothingAlgorithmSelection.Enable = 'off';
             app.AnalyzeButton.Enable = 'off';
             app.ExportButton.Enable = 'off';
             
@@ -695,6 +701,7 @@ classdef GelInsight < matlab.apps.AppBase
             app.BandPercLowLimInput.Enable = 'off';
             app.BandPercHighLimInput.Enable = 'off';
             app.SmoothingFactorInput.Enable = 'off';
+            app.SmoothingAlgorithmSelection.Enable = 'off';
             app.ResetLaneLadderDetectionButton.Enable = 'off';
         end
 
@@ -798,6 +805,7 @@ classdef GelInsight < matlab.apps.AppBase
             app.BandPercLowLimInput.Enable = 'on';
             app.BandPercHighLimInput.Enable = 'on';
             app.SmoothingFactorInput.Enable = 'on';
+            app.SmoothingAlgorithmSelection.Enable = 'on';
         end
 
         % Value changed function: BandPercLowLimInput
@@ -846,7 +854,7 @@ classdef GelInsight < matlab.apps.AppBase
                     ImTemp = app.Im(ind,app.LeftLaneEdges(ii):app.RightLaneEdges(ii));
                     app.LaneIm{ii} = ImTemp;
                     meanInt_raw = mean(1-ImTemp,2); % flip intensity
-                    meanInt_raw = meanInt_raw(bpSort); % sort axes according to BpVal 
+                    meanInt_raw = meanInt_raw(bpSort)-(1-median(app.RawIm,'all')); % sort axes according to BpVal 
                     meanInt_raw(meanInt_raw < 0) = 0; % negative numbers --> 0
                     meanInt = interp1(app.BpVal_log,meanInt_raw,app.BpVal,'linear','extrap');
                     
@@ -855,9 +863,10 @@ classdef GelInsight < matlab.apps.AppBase
                     app.NormRawData(:,ii) = meanInt/max(meanInt);
                     
                     % smooth data to improve peak detection (based on smoothing factor)
-                    smoothData = smoothdata(meanInt,'gaussian');  % gaussian-weighted moving average filter
                     smoothfactor = app.SmoothingFactorInput.Value; % get smoothing factor
-                    smInt = ((smoothfactor)*smoothData+(1-smoothfactor)*meanInt); % take the weighted average of gaussian fit and raw data to maintains any slight skewness
+                    smoothData = smoothdata(meanInt,app.SmoothingAlgorithmSelection.Value,'SmoothingFactor',smoothfactor);  % can be modified by user
+                    smInt = smoothData; 
+%                     smInt = ((smoothfactor)*smoothData+(1-smoothfactor)*meanInt); % take the weighted average of gaussian fit and raw data to maintains any slight skewness
                     smInt(smInt < 0) = 0;
                     
                     % save smoothed intensity
@@ -1089,19 +1098,6 @@ classdef GelInsight < matlab.apps.AppBase
             app.GridLayout.RowSpacing = 5.5;
             app.GridLayout.Padding = [0 0 0 0];
 
-            % Create Image
-            app.Image = uiaxes(app.GridLayout);
-            app.Image.Toolbar.Visible = 'off';
-            app.Image.XTick = [];
-            app.Image.YTick = [];
-            app.Image.ZTick = [];
-            app.Image.BoxStyle = 'full';
-            app.Image.FontSize = 14;
-            app.Image.GridAlpha = 0.15;
-            app.Image.Box = 'on';
-            app.Image.Layout.Row = [5 7];
-            app.Image.Layout.Column = [2 3];
-
             % Create ROI
             app.ROI = uiaxes(app.GridLayout);
             app.ROI.Toolbar.Visible = 'off';
@@ -1115,6 +1111,19 @@ classdef GelInsight < matlab.apps.AppBase
             app.ROI.Box = 'on';
             app.ROI.Layout.Row = [2 5];
             app.ROI.Layout.Column = 6;
+
+            % Create Image
+            app.Image = uiaxes(app.GridLayout);
+            app.Image.Toolbar.Visible = 'off';
+            app.Image.XTick = [];
+            app.Image.YTick = [];
+            app.Image.ZTick = [];
+            app.Image.BoxStyle = 'full';
+            app.Image.FontSize = 14;
+            app.Image.GridAlpha = 0.15;
+            app.Image.Box = 'on';
+            app.Image.Layout.Row = [5 7];
+            app.Image.Layout.Column = [2 3];
 
             % Create AnalyzeButton
             app.AnalyzeButton = uibutton(app.GridLayout, 'push');
@@ -1187,7 +1196,7 @@ classdef GelInsight < matlab.apps.AppBase
             app.DetectLadderButton.FontWeight = 'bold';
             app.DetectLadderButton.Enable = 'off';
             app.DetectLadderButton.Layout.Row = 5;
-            app.DetectLadderButton.Layout.Column = [2 3];
+            app.DetectLadderButton.Layout.Column = [1 2];
             app.DetectLadderButton.Text = 'Detect Ladder';
 
             % Create TargetFragmentSizeRangePanel
@@ -1249,13 +1258,14 @@ classdef GelInsight < matlab.apps.AppBase
 
             % Create SmoothingFactorInput
             app.SmoothingFactorInput = uispinner(app.GridLayout3);
-            app.SmoothingFactorInput.Step = 0.05;
+            app.SmoothingFactorInput.Step = 0.01;
             app.SmoothingFactorInput.Limits = [0 1];
+            app.SmoothingFactorInput.ValueDisplayFormat = '%.3f';
             app.SmoothingFactorInput.FontSize = 14;
             app.SmoothingFactorInput.Enable = 'off';
             app.SmoothingFactorInput.Layout.Row = 6;
             app.SmoothingFactorInput.Layout.Column = 4;
-            app.SmoothingFactorInput.Value = 0.3;
+            app.SmoothingFactorInput.Value = 0.15;
 
             % Create DetectLanesButton
             app.DetectLanesButton = uibutton(app.GridLayout3, 'push');
@@ -1289,9 +1299,26 @@ classdef GelInsight < matlab.apps.AppBase
             app.ResetLaneLadderDetectionButton.ButtonPushedFcn = createCallbackFcn(app, @ResetLaneLadderDetectionButtonPushed, true);
             app.ResetLaneLadderDetectionButton.FontWeight = 'bold';
             app.ResetLaneLadderDetectionButton.Enable = 'off';
-            app.ResetLaneLadderDetectionButton.Layout.Row = 7;
+            app.ResetLaneLadderDetectionButton.Layout.Row = 5;
             app.ResetLaneLadderDetectionButton.Layout.Column = [3 4];
             app.ResetLaneLadderDetectionButton.Text = 'Reset Lane/Ladder Detection';
+
+            % Create SmoothingalgorithmDropDownLabel
+            app.SmoothingalgorithmDropDownLabel = uilabel(app.GridLayout3);
+            app.SmoothingalgorithmDropDownLabel.HorizontalAlignment = 'right';
+            app.SmoothingalgorithmDropDownLabel.FontSize = 14;
+            app.SmoothingalgorithmDropDownLabel.Layout.Row = 7;
+            app.SmoothingalgorithmDropDownLabel.Layout.Column = 3;
+            app.SmoothingalgorithmDropDownLabel.Text = 'Smoothing algorithm';
+
+            % Create SmoothingAlgorithmSelection
+            app.SmoothingAlgorithmSelection = uidropdown(app.GridLayout3);
+            app.SmoothingAlgorithmSelection.Items = {'gaussian', 'sgolay', 'movmean', 'movmedian', 'lowess', 'loess', 'rlowess', 'rloess'};
+            app.SmoothingAlgorithmSelection.Enable = 'off';
+            app.SmoothingAlgorithmSelection.FontSize = 14;
+            app.SmoothingAlgorithmSelection.Layout.Row = 7;
+            app.SmoothingAlgorithmSelection.Layout.Column = 4;
+            app.SmoothingAlgorithmSelection.Value = 'gaussian';
 
             % Create MoveLineInstructions
             app.MoveLineInstructions = uilabel(app.GridLayout);
@@ -1511,16 +1538,6 @@ classdef GelInsight < matlab.apps.AppBase
             app.GridLayout10.ColumnWidth = {'0.75x', '1x', '1x', '1x'};
             app.GridLayout10.RowHeight = {'1x', 35};
 
-            % Create BpDistribution
-            app.BpDistribution = uiaxes(app.GridLayout10);
-            title(app.BpDistribution, ' ')
-            xlabel(app.BpDistribution, {'Log-scaled Base Pair'; ''})
-            ylabel(app.BpDistribution, 'Intensity [A.U.]')
-            app.BpDistribution.PlotBoxAspectRatio = [1.07606263982103 1 1];
-            app.BpDistribution.Box = 'on';
-            app.BpDistribution.Layout.Row = 1;
-            app.BpDistribution.Layout.Column = [2 4];
-
             % Create LaneImage
             app.LaneImage = uiaxes(app.GridLayout10);
             app.LaneImage.PlotBoxAspectRatio = [1 1.91158536585366 1];
@@ -1530,6 +1547,16 @@ classdef GelInsight < matlab.apps.AppBase
             app.LaneImage.Box = 'on';
             app.LaneImage.Layout.Row = 1;
             app.LaneImage.Layout.Column = 1;
+
+            % Create BpDistribution
+            app.BpDistribution = uiaxes(app.GridLayout10);
+            title(app.BpDistribution, ' ')
+            xlabel(app.BpDistribution, {'Log-scaled Base Pair'; ''})
+            ylabel(app.BpDistribution, 'Intensity [A.U.]')
+            app.BpDistribution.PlotBoxAspectRatio = [1.07606263982103 1 1];
+            app.BpDistribution.Box = 'on';
+            app.BpDistribution.Layout.Row = 1;
+            app.BpDistribution.Layout.Column = [2 4];
 
             % Create LeftButton
             app.LeftButton = uibutton(app.GridLayout10, 'push');
