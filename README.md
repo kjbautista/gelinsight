@@ -36,7 +36,7 @@ The following programs (and recommended versions) are required:
   6. Input comma-delimited ladder values from highest to lowest (relative to the image).
   7. Click `Detect Ladder` for automated ladder detection. Adjust ladder detections, if needed.
   8. For DNA fragmentation quality control, input the target base-pair range.
-  9. Adjust the smoothing factor, where 0 applies no smoothing to the image while 1 applies maximum smoothing to the image. This will vary according to the noise present in the samples.
+  9. Adjust the smoothing factor (where 0 applies no smoothing while 1 applies the maximum based on a hueristic window size) and select the desired smoothing algorithm. For more information on these parameters, refer to the method and SmoothingFactor (under Name-Value Arguments, Smoothing Options) input arguments in this [MATLAB documentation](https://www.mathworks.com/help/matlab/ref/smoothdata.html).
   10. Click `Analyze` to proceed into the Analysis.
 <p align="center">
   <img src="./img/demo_2.PNG" alt="Software Demo - Results" width="800">
